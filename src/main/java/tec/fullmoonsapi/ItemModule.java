@@ -22,14 +22,31 @@ public class ItemModule {
     @JsonProperty("image")
     private byte[] image;
 
+    @JsonProperty("dayUntilWater")
+    @Column(nullable = true)
+    private Integer dayUntilWater;
+
+    @ManyToOne
+    @JoinColumn(name = "admin_login_id", nullable = false)
+    private AdminLogin adminLogin; // Reference to AdminLogin
+
     public ItemModule() {
     }
 
-    public ItemModule(String name, int waterNeeded, boolean isWatered, byte[] image) {
+    public ItemModule(String name, int waterNeeded, boolean isWatered, byte[] image, Integer dayUntilWater, AdminLogin adminLogin) {
         this.name = name;
         this.waterNeeded = waterNeeded;
         this.isWatered = isWatered;
         this.image = image;
+        this.dayUntilWater = dayUntilWater;
+        this.adminLogin = adminLogin;
+    }
+    public AdminLogin getAdminLogin() {
+        return adminLogin;
+    }
+
+    public void setAdminLogin(AdminLogin adminLogin) {
+        this.adminLogin = adminLogin;
     }
 
     public Long getId() {
@@ -70,5 +87,13 @@ public class ItemModule {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public Integer getDayUntilWater() {
+        return dayUntilWater;
+    }
+
+    public void setDayUntilWater(Integer dayUntilWater) {
+        this.dayUntilWater = dayUntilWater;
     }
 }

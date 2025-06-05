@@ -31,6 +31,10 @@ public class ItemController {
 
     @PostMapping
     public ItemModule createItem(@RequestBody ItemModule item) {
+        // Ensure the adminLogin is valid before saving
+        if (item.getAdminLogin() == null || item.getAdminLogin().getId() == null) {
+            throw new IllegalArgumentException("AdminLogin must be provided for the item.");
+        }
         return itemRepository.save(item);
     }
 
@@ -43,6 +47,8 @@ public class ItemController {
             item.setWaterNeeded(itemDetails.getWaterNeeded());
             item.setWatered(itemDetails.isWatered());
             item.setImage(itemDetails.getImage());
+            item.setDayUntilWater(itemDetails.getDayUntilWater());
+            item.setAdminLogin(itemDetails.getAdminLogin()); // Update the adminLogin
             return ResponseEntity.ok(itemRepository.save(item));
         } else {
             return ResponseEntity.notFound().build();
