@@ -29,6 +29,13 @@ public class ItemController {
         }
     }
 
+    @GetMapping("/admin/{adminId}")
+    public List<ItemModule> getItemsByAdminLogin(@PathVariable Long adminId) {
+        return itemRepository.findAll().stream()
+                .filter(item -> item.getAdminLogin() != null && item.getAdminLogin().getId().equals(adminId))
+                .toList();
+    }
+
     @PostMapping
     public ItemModule createItem(@RequestBody ItemModule item) {
         // Ensure the adminLogin is valid before saving
