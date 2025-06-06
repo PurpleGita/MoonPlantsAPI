@@ -62,6 +62,19 @@ public class ItemController {
         }
     }
 
+    @PutMapping("/dayPassed")
+    public ResponseEntity<Void> dayPassed() {
+        List<ItemModule> items = itemRepository.findAll();
+        for (ItemModule item : items) {
+            item.setWatered(false);
+            if (item.getDayUntilWater() > 0) {
+                item.setDayUntilWater(item.getDayUntilWater() - 1);
+            }
+        }
+        itemRepository.saveAll(items);
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
         Optional<ItemModule> itemOptional = itemRepository.findById(id);
